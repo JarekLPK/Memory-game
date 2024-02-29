@@ -6,10 +6,7 @@ let container = document.querySelector(".container"),
   allBack = Array.from(document.querySelectorAll(".container .back")),
   countCorrect = 0,
   countWrongs = 0,
-  // Audios
-  success = new Audio("success.mp4"),
-  fail = new Audio("fail.mp4"),
-  // Storing Clicked Boxes in Array
+
   boxesSrcs = [],
   // Storing Clicked Images in Array
   imgsSrcs = [],
@@ -24,7 +21,7 @@ boxes.forEach((box) => {
     box.classList.add("flip");
     // Add The Clicked Box to the Array
     boxesSrcs.push(box);
-    // Get The Image from Clicked Box & Add it to the Array
+    // Get The Image from Clicked Box & Add it 
     imgsSrcs.push(box.querySelector(".back img").src);
     // if a box clicked stop clicking on it
     if (boxesSrcs.length == 1) {
@@ -148,7 +145,7 @@ function ifAllCorrect() {
   }
 }
 
-// Generate Random Images
+// Generate Random logos
 function random() {
   let orderedArr = [];
   for (let i = 1; i <= 10; i++) {
