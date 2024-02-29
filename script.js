@@ -1,37 +1,46 @@
-// Seclet Boxes Container
-let container = document.querySelector(".container"),
-  // Select All Boxes
-  boxes = Array.from(document.querySelectorAll(".container .box")),
-  // Create Array From All backs
-  allBack = Array.from(document.querySelectorAll(".container .back")),
-  countCorrect = 0,
-  countWrongs = 0,
+// Select Boxes Container
+const container = document.querySelector(".container");
 
-  boxesSrcs = [],
-  // Storing Clicked Images in Array
-  imgsSrcs = [],
-  // Select Play Again Button
-  playAgain = document.querySelector(".play-again"),
-  correct = document.querySelector(".correct-count");
+// Select All Boxes
+const boxes = Array.from(container.querySelectorAll(".box"));
+
+// Create Array From All Backs
+const allBack = Array.from(container.querySelectorAll(".back"));
+
+let countCorrect = 0;
+let countWrongs = 0;
+
+const boxesSrcs = [];
+const imgsSrcs = [];
+
+// Select Play Again Button
+const playAgain = document.querySelector(".play-again");
+const correct = document.querySelector(".correct-count");
 
 random();
 
 boxes.forEach((box) => {
-  box.addEventListener("click", (e) => {
+  box.addEventListener("click", () => {
     box.classList.add("flip");
+
     // Add The Clicked Box to the Array
     boxesSrcs.push(box);
-    // Get The Image from Clicked Box & Add it 
+
+    // Get The Image from Clicked Box & Add it
     imgsSrcs.push(box.querySelector(".back img").src);
+
     // if a box clicked stop clicking on it
-    if (boxesSrcs.length == 1) {
+    if (boxesSrcs.length === 1) {
       boxesSrcs[0].classList.add("pointerfreeze");
     }
+
     // If There's Two Selected Boxes
-    else if (boxesSrcs.length == 2) {
+    else if (boxesSrcs.length === 2) {
       container.classList.add("pointerfreeze");
+
       // Stop Clicking Function
-      removeFreeze(container);
+      removeFreeze();
+
       // If The Two Images are The Same
       if (imgsSrcs[0] === imgsSrcs[1]) {
         // If The Clicked Boxes Contain flip Class then Stop Clicking on it
@@ -40,6 +49,7 @@ boxes.forEach((box) => {
             ? box.classList.add("pointerfreeze")
             : false
         );
+
         countCorrect++;
         countCorrectFn();
         imgsSrcs.length = 0;
@@ -50,12 +60,13 @@ boxes.forEach((box) => {
         countWrongsFn();
       }
     }
-    boxesSrcs.length == 2 ? (boxesSrcs.length = 0) : false;
+
+    boxesSrcs.length === 2 && (boxesSrcs.length = 0);
   });
 });
 
 // Stop Clicking Function
-function removeFreeze(container) {
+function removeFreeze() {
   setTimeout(() => {
     container.classList.remove("pointerfreeze");
   }, 1500);
@@ -71,7 +82,7 @@ function removeFlip(box) {
 // Count Correct Attempts
 function countCorrectFn() {
   setTimeout(() => {
-    correct.innerHTML = `${countCorrect} / ${boxes.length / 2}`;
+    correct.textContent = `${countCorrect} / ${boxes.length / 2}`;
     success.play();
   }, 1000);
 }
@@ -81,44 +92,49 @@ function countWrongsFn() {
   setTimeout(() => {
     wrongTries.innerText = countWrongs;
   }, 1200);
+
   boxesSrcs.forEach((box) => {
     setTimeout(() => {
       fail.play();
     }, 1200);
+
     removeFlip(box);
     imgsSrcs.length = 0;
   });
 }
 
 // Ask to Play Again
-function playAgainFn(play) {
+function playAgainFn() {
   setTimeout(() => {
-    play.classList.add("show");
+    playAgain.classList.add("show");
   }, 4500);
+
   boxes.forEach((box) => {
     box.classList.remove("pointerfreeze");
   });
 }
 
 // If Play Again Clicked
-playAgain.addEventListener("click", (e) => {
+playAgain.addEventListener("click", () => {
   playAgain.classList.remove("show");
+
   boxes.forEach((box) => {
     box.classList.remove("flip");
   });
+
   countCorrect = 0;
   countWrongs = 0;
-  correct.innerHTML = `${countCorrect} / ${boxes.length / 2}`;
+  correct.textContent = `${countCorrect} / ${boxes.length / 2}`;
   wrongTries.innerText = countWrongs;
   random();
 });
 
 // Generate Random Confetti
-let randomConfetti = () => {
-  let cont = document.createElement("div");
+const randomConfetti = () => {
+  const cont = document.createElement("div");
   congrats.append(cont);
-  let createCongrats = setInterval(() => {
-    let confetti = document.createElement("div");
+  const createCongrats = setInterval(() => {
+    const confetti = document.createElement("div");
     confetti.classList.add("confetti");
     confetti.innerHTML = `<img src="imgs/confetti.png">`;
     confetti.style.left = `${Math.random() * 100}%`;
@@ -135,35 +151,37 @@ let randomConfetti = () => {
   }, 5000);
 };
 
-// Chack If All Correct
+// Check If All Correct
 function ifAllCorrect() {
-  if (countCorrect == boxes.length / 2) {
+  if (countCorrect === boxes.length / 2) {
     setTimeout(() => {
       randomConfetti();
     }, 1500);
-    playAgainFn(playAgain);
+    playAgainFn();
   }
 }
 
-// Generate Random logos
+// Generate Random Logos
 function random() {
-  let orderedArr = [];
+  const orderedArr = [];
   for (let i = 1; i <= 10; i++) {
     orderedArr.push(
       `<img src="imgs/${i}.png" alt="Car logo">`,
       `<img src="imgs/${i}.png" alt="Car logo">`
     );
   }
+
   function rand(max) {
     return Math.floor(Math.random() * max);
   }
 
-  let ranomizedArr = [];
+  const ranomizedArr = [];
   for (let i = 0; i < 20; i++) {
-    let random = rand(orderedArr.length);
+    const random = rand(orderedArr.length);
     ranomizedArr[i] = orderedArr[random];
     orderedArr.splice(random, 1);
   }
+
   for (let i = 0; i < allBack.length; i++) {
     allBack[i].innerHTML = ranomizedArr[i];
   }
